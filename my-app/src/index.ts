@@ -49,34 +49,51 @@ app.get('/users', async (c) => {
 
 app.post('/sign-up', async (c) => {
 
-  await db.insert(users).values({
-    id:5,
-    name:"chaalaa",
-    age:98,
-    email: "chaalaa@gmail.com"
+  const body = await c.req.json()
+  const { name, email,age } = body
+
+  try{
+    await db.insert(users).values({
+      name:body.name,
+      age:body.age,
+      email:body.email
+    }
+    )
+   return c.json({ message: 'user created succesfully!' }, 201)
+
   }
-  )
-  return  c.text('user created succesfully!')
+  catch(err){
+    
+    return c.json({ message: 'Something went wrong' }, 500)
+  }
+
 })
 
 app.post('/add-post', async (c) => {
 
-  await db.insert(posts).values({
-    post_id:2,
-    title:"The North Pole Icebergs Hold A Big Secret.",
-    content:"The north pole scientists found that some of the earliest birds and reptiles used to share and hunt together despite being 399% years apart",
-    userID:1
-  }
-  )
-  return  c.text('post added succesfully!')
-})
+  const body = await c.req.json()
+  const { postTitle,postContent} = body
 
-app.get('/add-comment', async (c) => {
+  try{
+  await db.insert(posts).values({
+    title:body.postTitle,
+    content:body.postContent,
+    userID:1
+  })
+  return c.json({ message: 'post created succesfully!' }, 201)
+}
+catch(err){
+  return c.json({ message: 'Something went wrong' }, 500)
+}})
+
+app.post('/add-comment', async (c) => {
+
+   const body = await c.req.json()
+  const { comment } = body
 
   await db.insert(comments).values({
-    comment_id:1,
     title:"That is incredable,keepgoing",
-    content:"I Really like this",
+    content:body.comment,
     postID:11,
     userID:1
   }

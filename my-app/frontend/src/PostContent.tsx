@@ -25,6 +25,7 @@ interface Post {
 }
 
 const [post_data,setPostData] = useState<Post[]>([]);
+const [comment, setComment] =useState("")
 
 useEffect(()=>{
    const fetchData = async () =>{
@@ -36,7 +37,24 @@ useEffect(()=>{
   fetchData()
   },[])
 
-console.log(post_data)
+  // Comment Posting
+  const addComment = async () => {
+    const body = JSON.stringify({ comment });
+
+    const response = await fetch('http://localhost:3000/add-comment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: body
+    });
+
+    if (response.ok) {
+      alert("comment has been added!")
+    } else {
+      alert("Something wrong happened!!! Try Again")
+    }
+  };
+
+  //Rendering
 return(
 
     
@@ -54,8 +72,11 @@ return(
             <Field>
                 
             <ButtonGroup>
-                <Input id="form-name" placeholder="Type to comment..." />
-                <Button variant="outline">comment</Button>
+                <Input 
+                id="form-name" placeholder="Type to comment..." 
+                onChange={(e) => setComment(e.target.value)}
+                />
+                <Button onClick={addComment} variant="outline">comment</Button>
             </ButtonGroup>
             </Field>
             </div>
@@ -63,6 +84,7 @@ return(
                 <Badge variant="secondary">User Name</Badge>
             </AlertAction>
         </Alert>
+
     </div>
         
     ))    
