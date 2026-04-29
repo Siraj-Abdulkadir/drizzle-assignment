@@ -11,17 +11,31 @@ import {
 } from "./components/ui/alert"
 import { ButtonGroup } from "./components/ui/button-group"
 import { Field } from "./components/ui/field"
+import { Separator } from "./components/ui/separator"
+import { Avatar,AvatarFallback,AvatarImage } from "./components/ui/avatar"
 
 
 function PostContent() {
 
 const MY_LINK = "http://localhost:3000/home"
 
+interface PostComments{
+  content:string;
+  user_ID:number;
+}
+
 interface Post {
   post_id: number;
   title: string;
   content: string;
   user_id:number;
+  user:{
+    id:number;
+    name:string;
+    email:string
+  };
+  post_comments:PostComments[]
+  ;
 }
 
 const [post_data,setPostData] = useState<Post[]>([]);
@@ -68,6 +82,30 @@ return(
             <AlertDescription>
                 {post.content}
             </AlertDescription>
+
+            <Separator></Separator>{
+              post.post_comments.length === 0?
+              <>
+              </>
+              :
+              <>
+              <strong style={{ color: '#47bbff',textDecoration: 'underline' }}><em>Comments:</em></strong>
+              {post.post_comments.map((subItem, index) => (
+                <div style={{ display:'flex', gap:'10px', margin:'2px 0 2px 0'}}  key={index} >
+                  <Avatar>
+                        <AvatarImage
+                          src="https://github.com/"
+                          alt="@shadcn"
+                          className="grayscale"
+                        />
+                        <AvatarFallback>CM</AvatarFallback>
+                        
+                      </Avatar>
+                  <span style={{ display:'flex',alignItems:'center'}}>{subItem.content}</span>
+                </div>
+              ))}
+              </>
+             }
             <div className="comment_section">
             <Field>
                 
@@ -81,7 +119,7 @@ return(
             </Field>
             </div>
             <AlertAction>
-                <Badge variant="secondary">User Name</Badge>
+                <Badge variant="outline">{post.user.name}</Badge>
             </AlertAction>
         </Alert>
 

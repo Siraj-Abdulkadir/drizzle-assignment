@@ -1,4 +1,5 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { relations } from "drizzle-orm";
 
 export const users = sqliteTable("users_table", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -17,7 +18,6 @@ export const posts = sqliteTable("posts_table", {
 
 export const comments = sqliteTable("comments_table", {
   comment_id: int().primaryKey({ autoIncrement: true }),
-  title: text().notNull(),
   content: text().notNull(),
   postID : int().notNull().references(() => posts.post_id),
   userID : int().notNull().references(() => users.id)
@@ -28,3 +28,19 @@ export const saved_posts = sqliteTable("saved_posts", {
   postID : int().notNull().references(() => posts.post_id),
   userID : int().notNull().references(() => users.id)
 });
+
+export const PostRelations = relations(posts, ({ many, one }) => ({
+  post_comments: many(comments),
+  user: one(users, {
+    fields: [posts.userID],
+    references: [users.id],
+  }),
+}));
+
+
+export const CommentRelations = relations(comments, ({ one }) => ({
+  comment_belongs_to : one(posts, {
+    fields: [comments.postID], 
+    references: [posts.post_id],
+  }),
+}));

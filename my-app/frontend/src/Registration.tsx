@@ -11,18 +11,8 @@ import {
 } from "./components/ui/card"
 import { Input } from "./components/ui/input"
 import { Label } from "./components/ui/label"
-import {
-  Menubar,
-  MenubarContent,
-  MenubarGroup,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "./components/ui/menubar"
-import { useState } from 'react'
-import { toast } from "sonner"
+import { useState,useEffect } from 'react'
+import NavMenu from "./NavMenu"
 
 
 export default function Registration() {
@@ -49,23 +39,28 @@ export default function Registration() {
     }
   };
 
+
+
+  const [logged_user, setLoggedUser] = useState(null)
+  const MY_LINK = 'http://localhost:3000/login'
+
+
+  // check logged in user by email
+  useEffect(()=>{
+     const logUser = async () =>{
+      const api_data_result = await fetch(MY_LINK)
+      api_data_result.json().then(json =>{
+             setLoggedUser(json.session)
+      })
+    } 
+    logUser()
+    },[])
+
     return(
 
       <div>
-             <Menubar>
-                <MenubarMenu>
-                  <div className="menu_items_div">
-                  <MenubarTrigger>
-                    <a href="/">Home</a>
-                    </MenubarTrigger>
-                  <MenubarTrigger>Discover</MenubarTrigger>            
-                  <MenubarTrigger>Trending</MenubarTrigger>
-                  <Button variant="default">
-                    <a href="/registration">Sign Up</a>
-                  </Button>
-                  </div>
-                </MenubarMenu>
-          </Menubar>
+        
+        <NavMenu></NavMenu>
     
       <br />
       <br />

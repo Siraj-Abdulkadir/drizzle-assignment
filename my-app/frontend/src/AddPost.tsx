@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -41,7 +40,7 @@ function AddPost() {
 
     <div className="content_div">
 
-        <Dialog>
+      <Dialog>
       <form>
         <DialogTrigger>
           <Button variant="default">Add Post</Button>
@@ -69,10 +68,11 @@ function AddPost() {
           <DialogFooter>
             <DialogClose>
               <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <strong>  </strong>
             <Button
             onClick={add_post}
              type="button">Post</Button>
+              </DialogClose>
           </DialogFooter>
         </DialogContent>
       </form>

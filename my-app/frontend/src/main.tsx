@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Registration from './Registration.tsx';
+import Login from './LoginForm.tsx';
 
 // 1. Define the paths and the components (pages) they link to
 const router = createBrowserRouter([
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/registration",
     element: <Registration />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 
